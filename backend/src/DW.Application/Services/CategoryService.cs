@@ -2,6 +2,7 @@
 using DW.Domain;
 using DW.Domain.DTOs;
 using DW.Domain.Entities;
+using DW.Domain.Exceptions;
 using DW.Domain.Services;
 using System;
 using System.Collections.Generic;
@@ -20,19 +21,17 @@ namespace DW.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<CategoryDto> AddCategory(CategoryDto categoryDto)
+        public async Task<CategoryDto> GetCategory(int categoryId)
         {
-            var category = _mapper.Map<Category>(categoryDto);
-            
-            await _unitOfWork.CategoryRepository.AddAsync(category);
-            await _unitOfWork.SaveAsync();
+            var exists = await _unitOfWork.CategoryRepository.ExistAsync(x => x.Id == categoryId);
 
-            return _mapper.Map<CategoryDto>(category);
-        }
+            if (!exists)
+                throw new NotFoundException("La categoria seleccionada no existe");
 
-        public Task DeleteCategory(int categoryId)
-        {
-            throw new NotImplementedException();
+            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId);
+            var categoryDto = _mapper.Map<CategoryDto>(category);
+
+            return categoryDto;
         }
 
         public async Task<IEnumerable<CategoryDto>> GetCategories()
@@ -43,14 +42,38 @@ namespace DW.Application.Services
             return categoriesDto;
         }
 
-        public Task<CategoryDto> GetCategory(int categoryId)
+        public async Task<CategoryDto> AddCategory(CategoryDto categoryDto)
         {
-            throw new NotImplementedException();
+            var category = _mapper.Map<Category>(categoryDto);
+            
+            await _unitOfWork.CategoryRepository.AddAsync(category);
+            await _unitOfWork.SaveAsync();
+
+            return _mapper.Map<CategoryDto>(category);
         }
 
-        public Task UpdateCategory(CategoryDto categoryDto)
+        public async Task UpdateCategory(CategoryDto categoryDto)
         {
-            throw new NotImplementedException();
+            var exists = await _unitOfWork.CategoryRepository.ExistAsync(x => x.Id == categoryDto.Id);
+
+            if (!exists)
+                throw new NotFoundException("La categoria seleccionada no existe");
+
+            var category = _mapper.Map<Category>(categoryDto);
+            await _unitOfWork.CategoryRepository.UpdateAsync(category);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task DeleteCategory(int categoryId)
+        {
+            var exists = await _unitOfWork.CategoryRepository.ExistAsync(x => x.Id == categoryId);
+
+            if (!exists)
+                throw new NotFoundException("La categoria seleccionada no existe");
+
+            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId);
+            await _unitOfWork.CategoryRepository.DeleteAsync(category);
+            await _unitOfWork.SaveAsync();
         }
     }
 }
