@@ -36,7 +36,7 @@ namespace DW.Infrastructure.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> expression) 
         {
-            return await _entities.Where(expression).ToListAsync();
+            return await _entities.ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(int skip, int limit, Expression<Func<TEntity, bool>> expression)

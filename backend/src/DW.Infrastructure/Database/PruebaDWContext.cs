@@ -24,11 +24,11 @@ namespace DW.Infrastructure.Database
         {
             modelBuilder.Entity<Category>(entity =>
             {
-                entity.Property(e => e.Category1)
+                entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false)
-                    .HasColumnName("Category");
+                    .HasColumnName("Name");
             });
 
             modelBuilder.Entity<Customer>(entity =>

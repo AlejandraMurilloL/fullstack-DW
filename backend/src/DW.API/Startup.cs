@@ -1,4 +1,7 @@
+using DW.Application.Services;
+using DW.Domain.Services;
 using DW.Infrastructure.Database;
+using DW.Infrastructure.Extentions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace DW.API
@@ -33,6 +37,12 @@ namespace DW.API
 
             services.AddDbContext<PruebaDWContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PruebaDWContext")));
+
+            services.SetupUnitOfWork();
+
+            services.AddAutoMapper(Assembly.GetExecutingAssembly().GetReferencedAssemblies().Select(Assembly.Load));
+
+            services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddSwaggerGen(c =>
             {
