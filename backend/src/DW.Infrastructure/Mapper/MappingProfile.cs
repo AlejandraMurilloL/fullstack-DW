@@ -11,6 +11,8 @@ namespace DW.Infrastructure.Mapper
             CreateMap<CategoryDto, Category>().ReverseMap();
             CreateMap<CustomerDto, Customer>().ReverseMap();
             CreateMap<ProductDto, Product>().ReverseMap();
+            CreateMap<InvoiceDto, Invoice>().ReverseMap();
+            CreateMap<InvoiceDetailDto, InvoiceDetail>().ReverseMap();
         }
     }
 }
