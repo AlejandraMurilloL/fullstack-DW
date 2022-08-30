@@ -20,7 +20,8 @@ namespace DW.Infrastructure.Extentions
                     new CategoryRepository(context.Categories),
                     new CustomerRepository(context.Customers),
                     new ProductRepository(context.Products),
-                    new InvoiceRepository(context.Invoices)
+                    new InvoiceRepository(context.Invoices),
+                    new InvoiceDetailRepository(context.InvoiceDetails)
                 );
             });
             return serviceCollection;

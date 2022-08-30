@@ -22,7 +22,7 @@ namespace DW.Application.Services
 
         public async Task<ProductDto> GetProduct(int productId)
         {
-            var exists = await _unitOfWork.CustomerRepository.ExistAsync(x => x.Id == productId);
+            var exists = await _unitOfWork.ProductRepository.ExistAsync(x => x.Id == productId);
 
             if (!exists)
                 throw new NotFoundException("El producto seleccionado no existe");

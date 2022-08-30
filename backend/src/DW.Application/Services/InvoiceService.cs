@@ -4,6 +4,7 @@ using DW.Domain.DTOs;
 using DW.Domain.Entities;
 using DW.Domain.Exceptions;
 using DW.Domain.Services;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -44,6 +45,7 @@ namespace DW.Application.Services
         public async Task<InvoiceDto> AddInvoice(InvoiceDto invoiceDto)
         {
             var invoice = _mapper.Map<Invoice>(invoiceDto);
+            invoice.Date = DateTime.Now;
 
             await _unitOfWork.InvoiceRepository.AddAsync(invoice);
             await _unitOfWork.SaveAsync();

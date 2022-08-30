@@ -10,6 +10,7 @@ namespace DW.Domain
         ICustomerRepository CustomerRepository { get; set; }
         IProductRepository ProductRepository { get; set; }
         IInvoiceRepository InvoiceRepository { get; set; }
+        IInvoiceDetailRepository InvoiceDetailRepository { get; set; }
         Task<int> SaveAsync();
     }
 }

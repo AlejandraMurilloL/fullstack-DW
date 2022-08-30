@@ -29,22 +29,14 @@ namespace DW.Infrastructure.Repositories
             await Task.Run(() => { _entities.Update(entity); });
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public virtual async Task<TEntity> GetByIdAsync(int id)
         {
             return await _entities.FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> expression) 
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync() 
         {
             return await _entities.ToListAsync();
-        }
-
-        public async Task<IEnumerable<TEntity>> GetAllAsync(int skip, int limit, Expression<Func<TEntity, bool>> expression)
-        {
-            return await _entities.Where(expression)
-                           .Skip(skip)
-                           .Take(limit)
-                           .ToListAsync();
         }
 
         public void Delete(TEntity entity) 
@@ -55,11 +47,6 @@ namespace DW.Infrastructure.Repositories
         public async Task DeleteAsync(TEntity entity) 
         {
             await Task.Run(() => { Delete(entity); });
-        }
-
-        public async virtual Task<int> Count(Expression<Func<TEntity, bool>> expression = null) 
-        {
-            return await _entities.Where(expression).CountAsync();
         }
 
         public async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate) 

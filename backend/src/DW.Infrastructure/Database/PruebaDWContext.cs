@@ -81,7 +81,7 @@ namespace DW.Infrastructure.Database
                 entity.HasOne(d => d.Invoice)
                     .WithMany(p => p.InvoiceDetails)
                     .HasForeignKey(d => d.InvoiceId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_InvoiceDetails_Invoices");
 
                 entity.HasOne(d => d.Product)

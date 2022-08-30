@@ -10,11 +10,9 @@ namespace DW.Domain.Repositories
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task<TEntity> GetByIdAsync(int id);
-        Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> expression = null);
-        Task<IEnumerable<TEntity>> GetAllAsync(int skip, int limit, Expression<Func<TEntity, bool>> expression = null);
+        Task<IEnumerable<TEntity>> GetAllAsync();
         void Delete(TEntity entity);
         Task DeleteAsync(TEntity entity);
-        Task<int> Count(Expression<Func<TEntity, bool>> expression = null);
         Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate);
     }
 }

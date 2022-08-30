@@ -12,6 +12,7 @@ namespace DW.Infrastructure
         public ICustomerRepository CustomerRepository { get; set; }
         public IProductRepository ProductRepository { get; set; }
         public IInvoiceRepository InvoiceRepository { get; set; }
+        public IInvoiceDetailRepository InvoiceDetailRepository { get; set; }
 
         private readonly PruebaDWContext _pruebaDWContext;
 
@@ -19,13 +20,15 @@ namespace DW.Infrastructure
                           ICategoryRepository categoryRepository,
                           ICustomerRepository customerRepository,
                           IProductRepository productRepository,
-                          IInvoiceRepository invoiceRepository)
+                          IInvoiceRepository invoiceRepository,
+                          IInvoiceDetailRepository invoiceDetailRepository)
         {
             _pruebaDWContext = kCTestContext;
             CategoryRepository = categoryRepository;
             CustomerRepository = customerRepository;
             ProductRepository = productRepository;
             InvoiceRepository = invoiceRepository;
+            InvoiceDetailRepository = invoiceDetailRepository;
         }
 
         public async Task<int> SaveAsync() => await _pruebaDWContext.SaveChangesAsync();
