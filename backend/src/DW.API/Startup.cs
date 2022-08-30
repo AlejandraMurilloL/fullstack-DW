@@ -43,6 +43,7 @@ namespace DW.API
             services.AddAutoMapper(Assembly.GetExecutingAssembly().GetReferencedAssemblies().Select(Assembly.Load));
 
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICustomerService, CustomerService>();
 
             services.AddSwaggerGen(c =>
             {

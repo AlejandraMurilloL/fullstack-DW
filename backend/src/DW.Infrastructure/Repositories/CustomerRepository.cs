@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DW.Infrastructure.Repositories
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class CustomerRepository : Repository<Customer>, ICustomerRepository
     {
-        public CategoryRepository(DbSet<Category> categories) : base(categories)
+        public CustomerRepository(DbSet<Customer> customers) : base(customers)
         {
         }
     }

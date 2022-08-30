@@ -17,7 +17,8 @@ namespace DW.Infrastructure.Extentions
                 var context = f.GetService<PruebaDWContext>();
                 return new UnitOfWork(
                     context,
-                    new CategoryRepository(context.Categories)
+                    new CategoryRepository(context.Categories),
+                    new CustomerRepository(context.Customers)
                 );
             });
             return serviceCollection;

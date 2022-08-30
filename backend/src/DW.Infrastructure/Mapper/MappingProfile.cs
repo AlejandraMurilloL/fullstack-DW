@@ -9,6 +9,7 @@ namespace DW.Infrastructure.Mapper
         public MappingProfile()
         {
             CreateMap<CategoryDto, Category>().ReverseMap();
+            CreateMap<CustomerDto, Customer>().ReverseMap();
         }
     }
 }

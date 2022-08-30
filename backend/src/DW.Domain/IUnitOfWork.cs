@@ -7,6 +7,7 @@ namespace DW.Domain
     public interface IUnitOfWork : IDisposable
     {
         ICategoryRepository CategoryRepository { get; set; }
+        ICustomerRepository CustomerRepository { get; set; }
         Task<int> SaveAsync();
     }
 }
