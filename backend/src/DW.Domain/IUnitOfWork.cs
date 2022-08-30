@@ -8,6 +8,7 @@ namespace DW.Domain
     {
         ICategoryRepository CategoryRepository { get; set; }
         ICustomerRepository CustomerRepository { get; set; }
+        IProductRepository ProductRepository { get; set; }
         Task<int> SaveAsync();
     }
 }

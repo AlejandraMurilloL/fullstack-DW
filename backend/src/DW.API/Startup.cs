@@ -44,6 +44,7 @@ namespace DW.API
 
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IProductService, ProductService>();
 
             services.AddSwaggerGen(c =>
             {

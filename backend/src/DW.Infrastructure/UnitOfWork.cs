@@ -9,16 +9,19 @@ namespace DW.Infrastructure
     {
         public ICategoryRepository CategoryRepository { get; set; }
         public ICustomerRepository CustomerRepository { get; set; }
+        public IProductRepository ProductRepository { get; set; }
 
         private readonly PruebaDWContext _pruebaDWContext;
 
         public UnitOfWork(PruebaDWContext kCTestContext, 
                           ICategoryRepository categoryRepository,
-                          ICustomerRepository customerRepository)
+                          ICustomerRepository customerRepository,
+                          IProductRepository productRepository)
         {
             _pruebaDWContext = kCTestContext;
             CategoryRepository = categoryRepository;
             CustomerRepository = customerRepository;
+            ProductRepository = productRepository;
         }
 
         public async Task<int> SaveAsync() => await _pruebaDWContext.SaveChangesAsync();

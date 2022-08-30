@@ -18,7 +18,8 @@ namespace DW.Infrastructure.Extentions
                 return new UnitOfWork(
                     context,
                     new CategoryRepository(context.Categories),
-                    new CustomerRepository(context.Customers)
+                    new CustomerRepository(context.Customers),
+                    new ProductRepository(context.Products)
                 );
             });
             return serviceCollection;
