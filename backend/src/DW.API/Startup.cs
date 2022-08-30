@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Prueba.DW.WebAPI
+namespace DW.API
 {
     public class Startup
     {
@@ -30,7 +30,7 @@ namespace Prueba.DW.WebAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Prueba.DW.WebAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DW.API", Version = "v1" });
             });
         }
 
@@ -41,7 +41,7 @@ namespace Prueba.DW.WebAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Prueba.DW.WebAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DW.API v1"));
             }
 
             app.UseHttpsRedirection();

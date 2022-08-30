@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Prueba.DW.WebAPI.Controllers
+namespace DW.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

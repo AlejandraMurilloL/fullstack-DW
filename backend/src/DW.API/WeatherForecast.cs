@@ -1,6 +1,6 @@
 using System;
 
-namespace Prueba.DW.WebAPI
+namespace DW.API
 {
     public class WeatherForecast
     {
