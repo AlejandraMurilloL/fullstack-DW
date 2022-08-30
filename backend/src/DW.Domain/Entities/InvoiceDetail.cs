@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace DW.Domain.Entities
 {
-    public class InvoiceDetail
+    public class InvoiceDetail : BaseEntity
     {
-        public int InvoiceDetailId { get; set; }
         public int InvoiceId { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 
 namespace DW.Domain.Entities
 {
-    public class Invoice
+    public class Invoice : BaseEntity
     {
         public Invoice()
         {
             InvoiceDetails = new HashSet<InvoiceDetail>();
         }
 
-        public int InvoiceId { get; set; }
         public int CustomerId { get; set; }
         public int Num { get; set; }
         public DateTime Date { get; set; }
