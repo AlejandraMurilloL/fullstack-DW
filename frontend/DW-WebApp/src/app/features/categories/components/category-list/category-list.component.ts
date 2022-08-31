@@ -24,7 +24,6 @@ export class CategoryListComponent implements OnInit {
   
   loadDatos() {
     this.categoriesService.getCategories().subscribe((datos) => {
-      console.log(datos);
       this.categories = datos;
     });
   }
