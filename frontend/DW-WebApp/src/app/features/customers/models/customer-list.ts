@@ -1,4 +1,4 @@
-export class CustomerDetail {
+export class CustomerList {
     id!: number;
     firstName!: string;
     lastName!: string;

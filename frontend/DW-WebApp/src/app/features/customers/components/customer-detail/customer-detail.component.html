@@ -1,1 +1,85 @@
-<p>customer-detail works!</p>
+<h2>{{ customer.id ? 'Editar Cliente' : 'Nuevo Cliente' }}</h2>
+<div class="dx-fieldset">
+    <div class="dx-field">
+        <div class="dx-field-label">Nombres:</div>
+        <div class="dx-field-value">
+            <dx-text-box  
+                [(value)]="customer.firstName"
+            ></dx-text-box>
+        </div>
+    </div>
+    <div class="dx-field">
+        <div class="dx-field-label">Apellidos:</div>
+        <div class="dx-field-value">
+            <dx-text-box  
+                [(value)]="customer.lastName"
+            ></dx-text-box>
+        </div>
+    </div>
+    <div class="dx-field">
+        <div class="dx-field-label">Telefono:</div>
+        <div class="dx-field-value">
+            <dx-text-box  
+                [(value)]="customer.phone"
+            ></dx-text-box>
+        </div>
+    </div>
+    <div class="dx-field">
+        <div class="dx-field-label">Identificación:</div>
+        <div class="dx-field-value">
+            <dx-text-box  
+                [(value)]="customer.identificationDocument!"
+            ></dx-text-box>
+        </div>
+    </div>
+    <div class="dx-field">
+        <div class="dx-field-label">Dirección:</div>
+        <div class="dx-field-value">
+            <dx-text-box  
+                [(value)]="customer.adress!"
+            ></dx-text-box>
+        </div>
+    </div>
+    <div class="dx-field">
+        <div class="dx-field-label">Email:</div>
+        <div class="dx-field-value">
+            <dx-text-box  
+                [(value)]="customer.email!"
+            ></dx-text-box>
+        </div>
+    </div>
+    <div class="dx-field">
+        <div class="dx-field-label">Fecha de nacimiento:</div>
+        <div class="dx-field-value">
+            <dx-date-box 
+                [value]="customer.dateOfBirth" 
+                type="date"
+                (onValueChanged)="onDateOfBirthChanged($event)"
+            ></dx-date-box>
+        </div>
+    </div>
+</div>
+<div class="dx-fieldset">
+    <dx-validation-summary id="summary"></dx-validation-summary>
+
+    <dx-button
+      class="btn"
+      id="saveButton"
+      text="Guardar"
+      icon="save"
+      type="success"
+      (onClick)="onSaveClick()"
+    >
+    </dx-button>
+    <dx-button
+      class="btn"
+      stylingMode="outlined"
+      id="backButton"
+      text="Cancelar"
+      icon="back"
+      type="success"
+      (onClick)="onBackClick()"
+    >
+    </dx-button>
+</div>
+

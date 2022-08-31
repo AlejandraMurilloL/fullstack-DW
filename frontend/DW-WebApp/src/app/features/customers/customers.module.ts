@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { DevExtremeModule } from 'devextreme-angular';
 import { CustomerDetailComponent } from './components/customer-detail/customer-detail.component';
 import { CustomerListComponent } from './components/customer-list/customer-list.component';
 import { CustomersRoutingModule } from './customers-routing.module';
@@ -13,7 +14,8 @@ import { CustomersRoutingModule } from './customers-routing.module';
   ],
   imports: [
     CommonModule,
-    CustomersRoutingModule
+    CustomersRoutingModule,
+    DevExtremeModule
   ]
 })
 export class CustomersModule { }

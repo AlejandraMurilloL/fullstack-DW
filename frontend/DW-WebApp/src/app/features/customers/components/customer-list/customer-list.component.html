@@ -1,1 +1,44 @@
-<p>customer-list works!</p>
+<h2>Clientes</h2>
+<dx-data-grid
+  id="gridContainer"
+  [dataSource]="customers"
+  [showBorders]="true"
+  (onToolbarPreparing)="onToolbarPreparing($event)"
+>
+  <dxo-search-panel [visible]="true"></dxo-search-panel>
+  <dxo-header-filter [visible]="true"></dxo-header-filter>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxi-column dataField="id" [visible]="false"></dxi-column>
+  <dxi-column dataField="firstName" caption="Nombre" width="10%"></dxi-column>
+  <dxi-column dataField="lastName" caption="Apellido" width="10%"></dxi-column>
+  <dxi-column dataField="phone" caption="Telefono" width="10%"></dxi-column>
+  <dxi-column dataField="identificationDocument" caption="Identificación" width="10%"></dxi-column>
+  <dxi-column dataField="adress" caption="Dirección" width="20%"></dxi-column>
+  <dxi-column dataField="email" caption="Email" width="20%"></dxi-column>
+  <dxi-column dataField="dateOfBirth" caption="Fecha Nacimiento" dataType="date" width="10%"></dxi-column>
+
+  <dxi-column
+    [allowFiltering]="false"
+    [allowSorting]="false"
+    cellTemplate="cellTemplate"
+  ></dxi-column>
+  <div *dxTemplate="let data of 'cellTemplate'">
+    <div class="img-container">
+      <dx-button
+        *ngIf="true"
+        icon="edit"
+        type="default"
+        (onClick)="onEditClick(data.data)"
+        hint="Editar"
+      ></dx-button>
+      <dx-button
+        *ngIf="true"
+        icon="remove"
+        type="danger"
+        (onClick)="onRemoveClick(data.data)"
+        hint="Eliminar"
+      ></dx-button>
+    </div>
+  </div>
+</dx-data-grid>
