@@ -1,17 +1,36 @@
 <h2>{{ category.id ? 'Editar Categoria' : 'Nueva Categoria' }}</h2>
-<div id="form-demo">
-    <div class="widget-container">
-        <div>
-            <span>Nombre:</span>
-            <dx-text-box  [(value)]="category.name"></dx-text-box>
+
+<div class="dx-fieldset">
+    <div class="dx-field">
+        <div class="dx-field-label">Nombre:</div>
+        <div class="dx-field-value">
+            <dx-text-box  
+                [(value)]="category.name"
+            ></dx-text-box>
         </div>
     </div>
+</div>
+
+<div class="dx-fieldset">
+    <dx-validation-summary id="summary"></dx-validation-summary>
 
     <dx-button
-        class="mt-2"
-        icon="save"
-        text="Guardar"
-        (onClick)="onSaveClick()"
-        hint="Guardar"
-    ></dx-button>
+      class="btn"
+      id="saveButton"
+      text="Guardar"
+      icon="save"
+      type="success"
+      (onClick)="onSaveClick()"
+    >
+    </dx-button>
+    <dx-button
+      class="btn"
+      stylingMode="outlined"
+      id="backButton"
+      text="Cancelar"
+      icon="back"
+      type="success"
+      (onClick)="onBackClick()"
+    >
+    </dx-button>
 </div>

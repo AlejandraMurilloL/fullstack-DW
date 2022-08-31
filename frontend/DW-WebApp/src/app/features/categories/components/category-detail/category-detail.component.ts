@@ -37,4 +37,8 @@ export class CategoryDetailComponent implements OnInit {
       this.router.navigate(['/categorias/listado']);
     });
   }
+
+  onBackClick(): void {
+    this.router.navigate(['/categorias/listado']);
+  }
 }

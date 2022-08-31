@@ -44,6 +44,10 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
+  onBackClick(): void {
+    this.router.navigate(['/productos/listado']);
+  }
+
   private loadCategories() : void {
     this.productsService.getCategories().subscribe((datos) => {
       this.categories = datos;

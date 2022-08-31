@@ -21,12 +21,14 @@
       <dx-button
         *ngIf="true"
         icon="edit"
+        type="default"
         (onClick)="onEditClick(data.data)"
         hint="Editar"
       ></dx-button>
       <dx-button
         *ngIf="true"
         icon="remove"
+        type="danger"
         (onClick)="onRemoveClick(data.data)"
         hint="Eliminar"
       ></dx-button>

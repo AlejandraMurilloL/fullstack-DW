@@ -35,6 +35,7 @@ export class CategoryListComponent implements OnInit {
       options: {
         icon: 'add',
         hint: 'Nuevo',
+        type: 'success',
         onClick: this.onNewClick.bind(this),
       },
     });

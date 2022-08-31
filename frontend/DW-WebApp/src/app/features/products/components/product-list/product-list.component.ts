@@ -35,6 +35,7 @@ export class ProductListComponent {
       options: {
         icon: 'add',
         hint: 'Nuevo',
+        type: 'success',
         onClick: this.onNewClick.bind(this),
       },
     });
