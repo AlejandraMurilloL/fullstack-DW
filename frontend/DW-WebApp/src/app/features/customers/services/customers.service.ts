@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { CustomerDetail } from '../models/customer-detail';
 import { CustomerList } from '../models/customer-list';
 
@@ -9,7 +10,7 @@ import { CustomerList } from '../models/customer-list';
 })
 export class CustomersService {
 
-  baseUrl: string = 'https://localhost:5001/api';
+  baseUrl: string = environment.API_URL;
   
   constructor(private http: HttpClient) { }
 

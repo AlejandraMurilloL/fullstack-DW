@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Category } from '../models/category';
 import { ProductDetail } from '../models/product-detail';
 import { ProductList } from '../models/product-list';
@@ -10,7 +11,7 @@ import { ProductList } from '../models/product-list';
 })
 export class ProductsService {
 
-  baseUrl: string = 'https://localhost:5001/api';
+  baseUrl: string = environment.API_URL;
   
   constructor(private http: HttpClient) { }
 
