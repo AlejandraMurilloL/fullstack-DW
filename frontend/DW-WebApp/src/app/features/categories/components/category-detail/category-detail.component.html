@@ -1,1 +1,17 @@
-<p>category-detail works!</p>
+<h2>Categorias</h2>
+<div id="form-demo">
+    <div class="widget-container">
+        <div>
+            <span>Nombre:</span>
+            <dx-text-box  [(value)]="category.name"></dx-text-box>
+        </div>
+    </div>
+
+    <dx-button
+        class="mt-2"
+        icon="save"
+        text="Guardar"
+        (onClick)="onSaveClick()"
+        hint="Guardar"
+    ></dx-button>
+</div>

@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { DxDrawerModule } from 'devextreme-angular/ui/drawer';
-import { DxListModule } from 'devextreme-angular/ui/list';
-import { DxToolbarModule } from 'devextreme-angular/ui/toolbar';
+import { DevexpressModule } from '../devexpress/devexpress.module';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 
@@ -13,9 +11,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
   ],
   imports: [
     CommonModule,
-    DxToolbarModule,
-    DxListModule,
-    DxDrawerModule
+    DevexpressModule
   ],
   exports: [
     SidebarComponent

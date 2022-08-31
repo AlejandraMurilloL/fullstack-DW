@@ -47,6 +47,17 @@ namespace DW.API
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IInvoiceService, InvoiceService>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                   builder => builder
+                    .WithOrigins(Configuration.GetSection("ClientHost").Value)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                  );
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DW.API", Version = "v1" });
@@ -64,6 +75,8 @@ namespace DW.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 

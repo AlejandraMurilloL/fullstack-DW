@@ -8,7 +8,11 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'detalles',
+        path: 'nuevo',
+        component: CategoryDetailComponent
+      },
+      {
+        path: 'editar/:id',
         component: CategoryDetailComponent
       },
       {
