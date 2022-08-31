@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { confirm } from 'devextreme/ui/dialog';
+import notify from 'devextreme/ui/notify';
 import { ProductList } from '../../models/product-list';
 import { ProductsService } from '../../services/products.service';
 
@@ -53,9 +54,22 @@ export class ProductListComponent {
     let result = confirm("<i>¿Está seguro de que desea eliminar el Producto seleccionado?</i>", "Advertencia");
     result.then((dialogResult) => {
         if (dialogResult) {
-          this.productsService.deleteProduct(data.id).subscribe(this.loadDatos.bind(this));
+          this.productsService.deleteProduct(data.id).subscribe({
+            next: this.loadDatos.bind(this),
+            error: ({error}) => { this.showAlertError(error) }           
+          });
         }
     });
+  }
+
+  private showAlertError(error: string): void {
+    notify({
+      message: error,
+      position: {
+        my: 'center top',
+        at: 'center top',
+      },
+    }, 'error', 4000);
   }
 
 }

@@ -16,7 +16,7 @@ namespace DW.Infrastructure.Repositories
 
         public override async Task<Product> GetByIdAsync(int id)
         {
-            return await _products.Include(x => x.Category).FirstOrDefaultAsync(e => e.Id == id);
+            return await _products.Include(x => x.Category).Include(x => x.InvoiceDetails).FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public override async Task<IEnumerable<Product>> GetAllAsync()

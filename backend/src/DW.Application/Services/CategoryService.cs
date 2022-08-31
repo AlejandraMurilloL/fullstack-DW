@@ -6,6 +6,7 @@ using DW.Domain.Exceptions;
 using DW.Domain.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DW.Application.Services
@@ -72,6 +73,10 @@ namespace DW.Application.Services
                 throw new NotFoundException("La categoria seleccionada no existe");
 
             var category = await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId);
+
+            if (category.Products.Any())
+                throw new ConflictException("La Categoria no se puede eliminar porque tiene productos asociados. Asegurese de eliminarlos antes.");
+
             await _unitOfWork.CategoryRepository.DeleteAsync(category);
             await _unitOfWork.SaveAsync();
         }

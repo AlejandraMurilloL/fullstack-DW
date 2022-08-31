@@ -1,10 +1,12 @@
 ﻿using DW.Domain.DTOs;
+using DW.Domain.Exceptions;
 using DW.Domain.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace DW.API.Controllers
@@ -30,8 +32,15 @@ namespace DW.API.Controllers
         [HttpGet("{invoiceId}")]
         public async Task<ActionResult<InvoiceDto>> Get(int invoiceId)
         {
-            var result = await _invoiceService.GetInvoice(invoiceId);
-            return Ok(result);
+            try
+            {
+                var result = await _invoiceService.GetInvoice(invoiceId);
+                return Ok(result);
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost]
@@ -44,15 +53,33 @@ namespace DW.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] InvoiceDto invoiceDto)
         {
-            await _invoiceService.UpdateInvoice(invoiceDto);
-            return Ok();
+            try
+            {
+                await _invoiceService.UpdateInvoice(invoiceDto);
+                return Ok();
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpDelete("{invoiceId}")]
         public async Task<IActionResult> Delete(int invoiceId)
         {
-            await _invoiceService.DeleteInvoice(invoiceId);
-            return Ok();
+            try
+            {
+                await _invoiceService.DeleteInvoice(invoiceId);
+                return Ok();
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (ConflictException e)
+            {
+                return StatusCode((int)HttpStatusCode.Conflict, e.Message);
+            }            
         }
     }
 }

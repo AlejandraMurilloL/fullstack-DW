@@ -5,6 +5,7 @@ using DW.Domain.Entities;
 using DW.Domain.Exceptions;
 using DW.Domain.Services;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DW.Application.Services
@@ -79,6 +80,10 @@ namespace DW.Application.Services
                 throw new NotFoundException("El Producto seleccionado no existe");
 
             var product = await _unitOfWork.ProductRepository.GetByIdAsync(productId);
+
+            if (product.InvoiceDetails.Any())
+                throw new ConflictException("El Producto no se puede eliminar porque tiene facturas asociadas. Asegurese de eliminarlas antes.");
+
             await _unitOfWork.ProductRepository.DeleteAsync(product);
             await _unitOfWork.SaveAsync();
         }

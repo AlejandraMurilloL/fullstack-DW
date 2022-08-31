@@ -1,7 +1,9 @@
 ﻿using DW.Domain.DTOs;
+using DW.Domain.Exceptions;
 using DW.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace DW.API.Controllers
@@ -27,8 +29,16 @@ namespace DW.API.Controllers
         [HttpGet("{customerId}")]
         public async Task<ActionResult<CustomerDto>> Get(int customerId)
         {
-            var result = await _customerService.GetCustomer(customerId);
-            return Ok(result);
+
+            try
+            {
+                var result = await _customerService.GetCustomer(customerId);
+                return Ok(result);
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost]
@@ -41,15 +51,33 @@ namespace DW.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] CustomerDto customerDto)
         {
-            await _customerService.UpdateCustomer(customerDto);
-            return Ok();
+            try
+            {
+                await _customerService.UpdateCustomer(customerDto);
+                return Ok();
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound(e.Message);
+            }            
         }
 
         [HttpDelete("{customerId}")]
         public async Task<IActionResult> Delete(int customerId)
         {
-            await _customerService.DeleteCustomer(customerId);
-            return Ok();
+            try
+            {
+                await _customerService.DeleteCustomer(customerId);
+                return Ok();
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (ConflictException e)
+            {
+                return StatusCode((int)HttpStatusCode.Conflict, e.Message);
+            }            
         }
     }
 }

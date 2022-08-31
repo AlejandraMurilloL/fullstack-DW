@@ -5,6 +5,7 @@ using DW.Domain.Entities;
 using DW.Domain.Exceptions;
 using DW.Domain.Services;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DW.Application.Services
@@ -71,6 +72,10 @@ namespace DW.Application.Services
                 throw new NotFoundException("El cliente seleccionado no existe");
 
             var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(customerId);
+
+            if (customer.Invoices.Any())
+                throw new ConflictException("El Cliente no se puede eliminar porque tiene facturas asociadas. Asegurese de eliminarlas antes.");
+
             await _unitOfWork.CustomerRepository.DeleteAsync(customer);
             await _unitOfWork.SaveAsync();
         }
