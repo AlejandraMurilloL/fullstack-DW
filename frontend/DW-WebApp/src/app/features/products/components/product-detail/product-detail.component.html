@@ -1,1 +1,48 @@
-<p>product-detail works!</p>
+<h2>{{ product.id ? 'Editar Producto' : 'Nuevo Producto' }}</h2>
+<div class="dx-fieldset">
+    <div class="dx-field">
+        <div class="dx-field-label">Categoria del producto:</div>
+        <div class="dx-field-value">
+          <dx-select-box
+            *ngIf="product"
+            [dataSource]="data"
+            displayExpr="name"
+            valueExpr="id"
+            [(value)]="product.category.id"
+            placeholder="Selecciona la categoria"
+          ></dx-select-box>
+        </div>
+    </div>
+    <div class="dx-field">
+        <div class="dx-field-label">Nombre:</div>
+        <div class="dx-field-value">
+            <dx-text-box  
+                [(value)]="product.name"
+            ></dx-text-box>
+        </div>
+    </div>
+    <div class="dx-field">
+        <div class="dx-field-label">Precio:</div>
+        <div class="dx-field-value">
+            <dx-number-box  
+                [(value)]="product.price"
+            ></dx-number-box>
+        </div>
+    </div>
+    <div class="dx-field">
+        <div class="dx-field-label">Stock:</div>
+        <div class="dx-field-value">
+            <dx-number-box  
+                [(value)]="product.stock"
+            ></dx-number-box>
+        </div>
+    </div>
+     <dx-button
+        class="mt-3"
+        icon="save"
+        text="Guardar"
+        (onClick)="onSaveClick()"
+        hint="Guardar"
+    ></dx-button>
+</div>
+

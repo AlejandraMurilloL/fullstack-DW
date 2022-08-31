@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Category } from '../models/category';
 import { ProductDetail } from '../models/product-detail';
 import { ProductList } from '../models/product-list';
 
@@ -27,6 +28,10 @@ export class ProductsService {
 
   deleteProduct(categoryId: number) : Observable<any> {
     return this.http.delete(`${this.baseUrl}/products/${categoryId}`);
+  }
+
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.baseUrl}/categories`);
   }
 
   private postProduct(product: ProductDetail): Observable<ProductDetail> {

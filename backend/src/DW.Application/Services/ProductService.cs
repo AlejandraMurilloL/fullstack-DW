@@ -59,12 +59,14 @@ namespace DW.Application.Services
             if (!exists)
                 throw new NotFoundException("El Producto seleccionado no existe");
 
-            var productCategoryExist = await _unitOfWork.CategoryRepository.ExistAsync(x => x.Id == productDto.Category.Id);
+            var productCategory = await _unitOfWork.CategoryRepository.GetByIdAsync(productDto.Category.Id);
 
-            if (!productCategoryExist)
+            if (productCategory == null)
                 throw new NotFoundException("La Categoria del Producto no existe");
 
             var product = _mapper.Map<Product>(productDto);
+            product.Category = productCategory;
+
             await _unitOfWork.ProductRepository.UpdateAsync(product);
             await _unitOfWork.SaveAsync();
         }
