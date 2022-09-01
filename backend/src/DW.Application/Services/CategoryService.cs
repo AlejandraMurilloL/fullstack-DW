@@ -24,11 +24,7 @@ namespace DW.Application.Services
 
         public async Task<CategoryDto> GetCategory(int categoryId)
         {
-            var exists = await _unitOfWork.CategoryRepository.ExistAsync(x => x.Id == categoryId);
-
-            if (!exists)
-                throw new NotFoundException("La categoria seleccionada no existe");
-
+            await CheckIfCategoryExists(categoryId);
             var category = await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId);
             var categoryDto = _mapper.Map<CategoryDto>(category);
 
@@ -55,10 +51,7 @@ namespace DW.Application.Services
 
         public async Task UpdateCategory(CategoryDto categoryDto)
         {
-            var exists = await _unitOfWork.CategoryRepository.ExistAsync(x => x.Id == categoryDto.Id);
-
-            if (!exists)
-                throw new NotFoundException("La categoria seleccionada no existe");
+            await CheckIfCategoryExists(categoryDto.Id);
 
             var category = _mapper.Map<Category>(categoryDto);
             await _unitOfWork.CategoryRepository.UpdateAsync(category);
@@ -67,18 +60,28 @@ namespace DW.Application.Services
 
         public async Task DeleteCategory(int categoryId)
         {
+            await CheckIfCategoryExists(categoryId);
+
+            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId);
+            CheckAssociatedProducts(category);
+
+            await _unitOfWork.CategoryRepository.DeleteAsync(category);
+            await _unitOfWork.SaveAsync();
+        }
+
+        private async Task CheckIfCategoryExists(int categoryId)
+        {
             var exists = await _unitOfWork.CategoryRepository.ExistAsync(x => x.Id == categoryId);
 
             if (!exists)
                 throw new NotFoundException("La categoria seleccionada no existe");
+        }
 
-            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId);
-
+        private static void CheckAssociatedProducts(Category category)
+        {
             if (category.Products.Any())
                 throw new ConflictException("La Categoria no se puede eliminar porque tiene productos asociados. Asegurese de eliminarlos antes.");
 
-            await _unitOfWork.CategoryRepository.DeleteAsync(category);
-            await _unitOfWork.SaveAsync();
         }
     }
 }

@@ -23,10 +23,7 @@ namespace DW.Application.Services
 
         public async Task<InvoiceDto> GetInvoice(int invoiceId)
         {
-            var exists = await _unitOfWork.InvoiceRepository.ExistAsync(x => x.Id == invoiceId);
-
-            if (!exists)
-                throw new NotFoundException("La Factura seleccionada no existe");
+            await CheckIfInvoiceExists(invoiceId);
 
             var invoice = await _unitOfWork.InvoiceRepository.GetByIdAsync(invoiceId);
             var invoiceDto = _mapper.Map<InvoiceDto>(invoice);
@@ -55,10 +52,7 @@ namespace DW.Application.Services
 
         public async Task UpdateInvoice(InvoiceDto invoiceDto)
         {
-            var exists = await _unitOfWork.InvoiceRepository.ExistAsync(x => x.Id == invoiceDto.Id);
-
-            if (!exists)
-                throw new NotFoundException("La Factura seleccionada no existe");
+            await CheckIfInvoiceExists(invoiceDto.Id);
 
             var invoice = _mapper.Map<Invoice>(invoiceDto);
             await _unitOfWork.InvoiceRepository.UpdateAsync(invoice);
@@ -67,14 +61,19 @@ namespace DW.Application.Services
 
         public async Task DeleteInvoice(int invoiceId)
         {
-            var exists = await _unitOfWork.InvoiceRepository.ExistAsync(x => x.Id == invoiceId);
-
-            if (!exists)
-                throw new NotFoundException("La Factura seleccionada no existe");
+            await CheckIfInvoiceExists(invoiceId);
 
             var invoice = await _unitOfWork.InvoiceRepository.GetByIdAsync(invoiceId);
             await _unitOfWork.InvoiceRepository.DeleteAsync(invoice);
             await _unitOfWork.SaveAsync();
+        }
+
+        private async Task CheckIfInvoiceExists(int invoiceId)
+        {
+            var exists = await _unitOfWork.InvoiceRepository.ExistAsync(x => x.Id == invoiceId);
+
+            if (!exists)
+                throw new NotFoundException("La Factura seleccionada no existe");
         }
     }
 }

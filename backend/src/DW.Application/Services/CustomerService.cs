@@ -23,10 +23,7 @@ namespace DW.Application.Services
 
         public async Task<CustomerDto> GetCustomer(int customerId)
         {
-            var exists = await _unitOfWork.CustomerRepository.ExistAsync(x => x.Id == customerId);
-
-            if (!exists)
-                throw new NotFoundException("El cliente seleccionado no existe");
+            await CheckIfCustomerExists(customerId);
 
             var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(customerId);
             var customerDto = _mapper.Map<CustomerDto>(customer);
@@ -54,10 +51,7 @@ namespace DW.Application.Services
 
         public async Task UpdateCustomer(CustomerDto customerDto)
         {
-            var exists = await _unitOfWork.CustomerRepository.ExistAsync(x => x.Id == customerDto.Id);
-
-            if (!exists)
-                throw new NotFoundException("El cliente seleccionado no existe");
+            await CheckIfCustomerExists(customerDto.Id);
 
             var customer = _mapper.Map<Customer>(customerDto);
             await _unitOfWork.CustomerRepository.UpdateAsync(customer);
@@ -66,18 +60,27 @@ namespace DW.Application.Services
 
         public async Task DeleteCustomer(int customerId)
         {
+            await CheckIfCustomerExists(customerId);
+
+            var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(customerId);
+            CheckAssociatedInvoices(customer);
+
+            await _unitOfWork.CustomerRepository.DeleteAsync(customer);
+            await _unitOfWork.SaveAsync();
+        }
+
+        private async Task CheckIfCustomerExists(int customerId)
+        {
             var exists = await _unitOfWork.CustomerRepository.ExistAsync(x => x.Id == customerId);
 
             if (!exists)
                 throw new NotFoundException("El cliente seleccionado no existe");
+        }
 
-            var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(customerId);
-
+        private void CheckAssociatedInvoices(Customer customer)
+        {
             if (customer.Invoices.Any())
                 throw new ConflictException("El Cliente no se puede eliminar porque tiene facturas asociadas. Asegurese de eliminarlas antes.");
-
-            await _unitOfWork.CustomerRepository.DeleteAsync(customer);
-            await _unitOfWork.SaveAsync();
         }
     }
 }

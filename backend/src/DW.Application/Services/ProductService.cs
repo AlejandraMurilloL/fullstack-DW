@@ -23,10 +23,7 @@ namespace DW.Application.Services
 
         public async Task<ProductDto> GetProduct(int productId)
         {
-            var exists = await _unitOfWork.ProductRepository.ExistAsync(x => x.Id == productId);
-
-            if (!exists)
-                throw new NotFoundException("El producto seleccionado no existe");
+            await CheckIfProductExists(productId);
 
             var product = await _unitOfWork.ProductRepository.GetByIdAsync(productId);
             var productDto = _mapper.Map<ProductDto>(product);
@@ -55,18 +52,12 @@ namespace DW.Application.Services
 
         public async Task UpdateProduct(ProductDto productDto)
         {
-            var exists = await _unitOfWork.ProductRepository.ExistAsync(x => x.Id == productDto.Id);
-
-            if (!exists)
-                throw new NotFoundException("El Producto seleccionado no existe");
-
-            var productCategory = await _unitOfWork.CategoryRepository.GetByIdAsync(productDto.Category.Id);
-
-            if (productCategory == null)
-                throw new NotFoundException("La Categoria del Producto no existe");
+            await CheckIfProductExists(productDto.Id);
 
             var product = _mapper.Map<Product>(productDto);
-            product.Category = productCategory;
+
+            var productCategory = await _unitOfWork.CategoryRepository.GetByIdAsync(productDto.Category.Id);
+            product.Category = productCategory ?? throw new NotFoundException("La Categoria del Producto no existe");
 
             await _unitOfWork.ProductRepository.UpdateAsync(product);
             await _unitOfWork.SaveAsync();
@@ -74,18 +65,27 @@ namespace DW.Application.Services
 
         public async Task DeleteProduct(int productId)
         {
+            await CheckIfProductExists(productId);
+
+            var product = await _unitOfWork.ProductRepository.GetByIdAsync(productId);
+            CheckAssociatedInvoices(product);
+
+            await _unitOfWork.ProductRepository.DeleteAsync(product);
+            await _unitOfWork.SaveAsync();
+        }
+
+        private async Task CheckIfProductExists(int productId)
+        {
             var exists = await _unitOfWork.ProductRepository.ExistAsync(x => x.Id == productId);
 
             if (!exists)
                 throw new NotFoundException("El Producto seleccionado no existe");
+        }
 
-            var product = await _unitOfWork.ProductRepository.GetByIdAsync(productId);
-
+        private void CheckAssociatedInvoices(Product product)
+        {
             if (product.InvoiceDetails.Any())
                 throw new ConflictException("El Producto no se puede eliminar porque tiene facturas asociadas. Asegurese de eliminarlas antes.");
-
-            await _unitOfWork.ProductRepository.DeleteAsync(product);
-            await _unitOfWork.SaveAsync();
         }
     }
 }
