@@ -1,9 +1,7 @@
 ﻿using DW.Domain.DTOs;
-using DW.Domain.Exceptions;
 using DW.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace DW.API.Controllers
@@ -29,15 +27,8 @@ namespace DW.API.Controllers
         [HttpGet("{productId}")]
         public async Task<ActionResult<ProductDto>> Get(int productId)
         {
-            try
-            {
-                var result = await _productService.GetProduct(productId);
-                return Ok(result);
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            var result = await _productService.GetProduct(productId);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -50,33 +41,15 @@ namespace DW.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] ProductDto productDto)
         {
-            try
-            {
-                await _productService.UpdateProduct(productDto);
-                return Ok();
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            await _productService.UpdateProduct(productDto);
+            return Ok();
         }
 
         [HttpDelete("{productId}")]
         public async Task<IActionResult> Delete(int productId)
         {
-            try
-            {
-                await _productService.DeleteProduct(productId);
-                return Ok();
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (ConflictException e)
-            {
-                return StatusCode((int)HttpStatusCode.Conflict, e.Message);
-            }
+            await _productService.DeleteProduct(productId);
+            return Ok();
         }
     }
 }

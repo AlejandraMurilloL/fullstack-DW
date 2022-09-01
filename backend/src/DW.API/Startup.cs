@@ -1,3 +1,4 @@
+using DW.API.Middlewares;
 using DW.Application.Services;
 using DW.Domain.Services;
 using DW.Infrastructure.Database;
@@ -77,6 +78,8 @@ namespace DW.API
             app.UseHttpsRedirection();
 
             app.UseCors("CorsPolicy");
+
+            app.UseMiddleware<ExceptionHandler>();
 
             app.UseRouting();
 

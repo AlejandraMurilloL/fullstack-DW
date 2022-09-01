@@ -1,10 +1,7 @@
 ﻿using DW.Domain.DTOs;
-using DW.Domain.Exceptions;
 using DW.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace DW.API.Controllers
@@ -30,15 +27,8 @@ namespace DW.API.Controllers
         [HttpGet("{categoryId}")]
         public async Task<ActionResult<CategoryDto>> Get(int categoryId)
         {
-            try
-            {
-                var result = await _categoryService.GetCategory(categoryId);
-                return Ok(result);
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            var result = await _categoryService.GetCategory(categoryId);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -51,33 +41,15 @@ namespace DW.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] CategoryDto categoryDto)
         {
-            try
-            {
-                await _categoryService.UpdateCategory(categoryDto);
-                return Ok();
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            await _categoryService.UpdateCategory(categoryDto);
+            return Ok();
         }
 
         [HttpDelete("{categoryId}")]
         public async Task<IActionResult> Delete(int categoryId)
         {
-            try
-            {
-                await _categoryService.DeleteCategory(categoryId);
-                return Ok();
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (ConflictException e)
-            {
-                return StatusCode((int)HttpStatusCode.Conflict, e.Message);
-            }
+            await _categoryService.DeleteCategory(categoryId);
+            return Ok();
         }
     }
 }

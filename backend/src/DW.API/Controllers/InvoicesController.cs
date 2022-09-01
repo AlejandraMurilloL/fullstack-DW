@@ -1,12 +1,7 @@
 ﻿using DW.Domain.DTOs;
-using DW.Domain.Exceptions;
 using DW.Domain.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace DW.API.Controllers
@@ -32,15 +27,8 @@ namespace DW.API.Controllers
         [HttpGet("{invoiceId}")]
         public async Task<ActionResult<InvoiceDto>> Get(int invoiceId)
         {
-            try
-            {
-                var result = await _invoiceService.GetInvoice(invoiceId);
-                return Ok(result);
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            var result = await _invoiceService.GetInvoice(invoiceId);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -53,33 +41,15 @@ namespace DW.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] InvoiceDto invoiceDto)
         {
-            try
-            {
-                await _invoiceService.UpdateInvoice(invoiceDto);
-                return Ok();
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            await _invoiceService.UpdateInvoice(invoiceDto);
+            return Ok();
         }
 
         [HttpDelete("{invoiceId}")]
         public async Task<IActionResult> Delete(int invoiceId)
         {
-            try
-            {
-                await _invoiceService.DeleteInvoice(invoiceId);
-                return Ok();
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (ConflictException e)
-            {
-                return StatusCode((int)HttpStatusCode.Conflict, e.Message);
-            }            
+            await _invoiceService.DeleteInvoice(invoiceId);
+            return Ok();
         }
     }
 }
