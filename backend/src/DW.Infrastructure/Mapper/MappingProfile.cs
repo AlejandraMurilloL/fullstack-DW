@@ -11,7 +11,9 @@ namespace DW.Infrastructure.Mapper
             CreateMap<CategoryDto, Category>().ReverseMap();
             CreateMap<CustomerDto, Customer>().ReverseMap();
             CreateMap<ProductDto, Product>().ReverseMap();
-            CreateMap<InvoiceDto, Invoice>().ReverseMap();
+            CreateMap<Invoice, InvoiceDto>()
+                .ForMember(x => x.Num, x => x.MapFrom(src => src.Num.ToString().PadLeft(6, '0')));
+            CreateMap<InvoiceDto, Invoice>();
             CreateMap<InvoiceDetailDto, InvoiceDetail>().ReverseMap();
         }
     }

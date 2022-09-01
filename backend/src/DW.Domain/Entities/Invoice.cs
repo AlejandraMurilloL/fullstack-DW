@@ -10,12 +10,30 @@ namespace DW.Domain.Entities
             InvoiceDetails = new HashSet<InvoiceDetail>();
         }
 
-        public int CustomerId { get; set; }
-        public int Num { get; set; }
-        public DateTime Date { get; set; }
-        public double Total { get; set; }
+        public int CustomerId { get; internal set; }
+        public int Num { get; internal set; }
+        public DateTime Date { get; internal set; }
+        public double Total { get; internal set; }
 
-        public virtual Customer Customer { get; set; }
+        public virtual Customer Customer { get; internal set; }
         public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; }
+
+        public Invoice WithInvoiceNumber(Invoice lastFactura)
+        {
+            if (lastFactura == null)
+            {
+                Num = 1;
+                return this;
+            }
+
+            Num = lastFactura.Num++;
+            return this;
+        }
+
+        public Invoice WithCurrentDate()
+        {
+            Date = DateTime.Now;
+            return this;
+        }
     }
 }

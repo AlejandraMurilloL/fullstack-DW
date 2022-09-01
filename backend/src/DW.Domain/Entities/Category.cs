@@ -10,7 +10,7 @@ namespace DW.Domain.Entities
             Products = new HashSet<Product>();
         }
 
-        public string Name { get; set; }
+        public string Name { get; internal set; }
 
         public virtual ICollection<Product> Products { get; set; }
     }

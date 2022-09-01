@@ -7,7 +7,7 @@ namespace DW.Domain.DTOs
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public int Num { get; set; }
+        public string Num { get; set; }
         public DateTime Date { get; set; }
         public double Total { get; set; }
         public CustomerDto Customer { get; set; }

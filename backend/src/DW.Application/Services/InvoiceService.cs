@@ -4,8 +4,8 @@ using DW.Domain.DTOs;
 using DW.Domain.Entities;
 using DW.Domain.Exceptions;
 using DW.Domain.Services;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DW.Application.Services
@@ -41,8 +41,13 @@ namespace DW.Application.Services
 
         public async Task<InvoiceDto> AddInvoice(InvoiceDto invoiceDto)
         {
-            var invoice = _mapper.Map<Invoice>(invoiceDto);
-            invoice.Date = DateTime.Now;
+            CheckInvoiceDetails(invoiceDto);
+
+            var invoice = _mapper.Map<Invoice>(invoiceDto)
+                .WithInvoiceNumber(await GetLastInvoice())
+                .WithCurrentDate();
+
+            UpdateStock(invoice.InvoiceDetails);
 
             await _unitOfWork.InvoiceRepository.AddAsync(invoice);
             await _unitOfWork.SaveAsync();
@@ -74,6 +79,29 @@ namespace DW.Application.Services
 
             if (!exists)
                 throw new NotFoundException("La Factura seleccionada no existe");
+        }
+
+        private void CheckInvoiceDetails(InvoiceDto invoice)
+        {
+            if (invoice.InvoiceDetails == null || invoice.InvoiceDetails.Count == 0)
+                throw new NotFoundException("No se puede crear la Factura porque no tiene ningún producto");
+        }
+
+        private async Task<Invoice> GetLastInvoice()
+        {
+            var lastInvoice = (await _unitOfWork.InvoiceRepository.GetAllAsync())
+                .OrderByDescending(x => x.Num)
+                .FirstOrDefault();
+
+            return lastInvoice;
+        }
+
+        private void UpdateStock(ICollection<InvoiceDetail> invoiceDetails)
+        {
+            foreach (var detail in invoiceDetails)
+            {
+                detail.Product.SubtractStock(detail.Quantity);
+            }
         }
     }
 }

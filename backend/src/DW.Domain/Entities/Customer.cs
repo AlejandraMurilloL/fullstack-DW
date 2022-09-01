@@ -10,13 +10,13 @@ namespace DW.Domain.Entities
             Invoices = new HashSet<Invoice>();
         }
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Phone { get; set; }
-        public string IdentificationDocument { get; set; }
-        public string Adress { get; set; }
-        public string Email { get; set; }
-        public DateTime? DateOfBirth { get; set; }
+        public string FirstName { get; internal set; }
+        public string LastName { get; internal set; }
+        public string Phone { get; internal set; }
+        public string IdentificationDocument { get; internal set; }
+        public string Adress { get; internal set; }
+        public string Email { get; internal set; }
+        public DateTime? DateOfBirth { get; internal set; }
 
         public virtual ICollection<Invoice> Invoices { get; set; }
     }

@@ -1,6 +1,5 @@
 ﻿using DW.Domain;
 using DW.Domain.Repositories;
-using DW.Domain.Services;
 using DW.Infrastructure.Database;
 using System.Threading.Tasks;
 
@@ -16,14 +15,14 @@ namespace DW.Infrastructure
 
         private readonly PruebaDWContext _pruebaDWContext;
 
-        public UnitOfWork(PruebaDWContext kCTestContext, 
+        public UnitOfWork(PruebaDWContext pruebaDWContext, 
                           ICategoryRepository categoryRepository,
                           ICustomerRepository customerRepository,
                           IProductRepository productRepository,
                           IInvoiceRepository invoiceRepository,
                           IInvoiceDetailRepository invoiceDetailRepository)
         {
-            _pruebaDWContext = kCTestContext;
+            _pruebaDWContext = pruebaDWContext;
             CategoryRepository = categoryRepository;
             CustomerRepository = customerRepository;
             ProductRepository = productRepository;
