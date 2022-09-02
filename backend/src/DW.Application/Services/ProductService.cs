@@ -56,9 +56,6 @@ namespace DW.Application.Services
 
             var product = _mapper.Map<Product>(productDto);
 
-            var productCategory = await _unitOfWork.CategoryRepository.GetByIdAsync(productDto.Category.Id);
-            product.Category = productCategory ?? throw new NotFoundException("La Categoria del Producto no existe");
-
             await _unitOfWork.ProductRepository.UpdateAsync(product);
             await _unitOfWork.SaveAsync();
         }

@@ -46,7 +46,7 @@ export class CategoryDetailComponent implements OnInit {
   }
 
   private onSuccess(): void {
-    this.alertService.showSuccessMessage('La categoria se guardo con éxito');
+    this.alertService.showSuccessMessage('La categoria se guardó con éxito');
     this.goToList();
   }
 

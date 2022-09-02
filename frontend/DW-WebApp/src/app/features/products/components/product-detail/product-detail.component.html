@@ -5,11 +5,12 @@
         <div class="dx-field-value">
           <dx-select-box
             *ngIf="product"
-            [dataSource]="data"
+            [dataSource]="categories"
             displayExpr="name"
             valueExpr="id"
             [(value)]="product.category.id"
             placeholder="Selecciona la categoria"
+            (onValueChanged)="onCategoryChange()"
           ></dx-select-box>
         </div>
     </div>
@@ -57,7 +58,7 @@
       text="Cancelar"
       icon="back"
       type="success"
-      (onClick)="onBackClick()"
+      (onClick)="goToList()"
     >
     </dx-button>
 </div>

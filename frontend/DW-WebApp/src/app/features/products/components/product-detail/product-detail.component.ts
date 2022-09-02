@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import ArrayStore from 'devextreme/data/array_store';
 import { switchMap } from 'rxjs';
+import { AlertService } from '../../../../shared/services/alert.service';
 import { Category } from '../../models/category';
 import { ProductDetail } from '../../models/product-detail';
 import { ProductsService } from '../../services/products.service';
@@ -13,13 +13,13 @@ import { ProductsService } from '../../services/products.service';
 })
 export class ProductDetailComponent implements OnInit {
 
-  data!: ArrayStore;
   product: ProductDetail;
   categories: Category[] = [];
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
-              private productsService: ProductsService) 
+              private productsService: ProductsService,
+              private alertService: AlertService) 
   {
     this.product = new ProductDetail();
     this.product.category = new Category();
@@ -39,22 +39,33 @@ export class ProductDetailComponent implements OnInit {
   }
 
   onSaveClick(): void {
-    this.productsService.saveProduct(this.product).subscribe(() => {
-      this.router.navigate(['/productos/listado']);
+    this.productsService.saveProduct(this.product).subscribe({
+      next: this.onSuccess.bind(this),
+      error: ({ message }) => { this.onError(message) }
     });
   }
 
-  onBackClick(): void {
+  goToList(): void {
     this.router.navigate(['/productos/listado']);
+  }
+
+  onCategoryChange() : void {
+    const category = this.categories.find(x => x.id == this.product.category.id);
+    this.product.category.name = category!.name;
+  }
+
+  private onSuccess(): void {
+    this.alertService.showSuccessMessage('El Producto se guardó con éxito');
+    this.goToList();
+  }
+
+  private onError(error: string) {
+    this.alertService.showErrorMessage(error);
   }
 
   private loadCategories() : void {
     this.productsService.getCategories().subscribe((datos) => {
       this.categories = datos;
-      this.data = new ArrayStore({
-        data: this.categories,
-        key: 'id',
-      });
     });
   }
 }

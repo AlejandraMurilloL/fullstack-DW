@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { confirm } from 'devextreme/ui/dialog';
-import notify from 'devextreme/ui/notify';
+import { AlertService } from '../../../../shared/services/alert.service';
 import { ProductList } from '../../models/product-list';
 import { ProductsService } from '../../services/products.service';
 
@@ -15,6 +15,7 @@ export class ProductListComponent {
   products: ProductList[] = [];
 
   constructor(private productsService: ProductsService,
+              private alertService: AlertService,
               private router: Router) 
   { 
   }
@@ -53,23 +54,23 @@ export class ProductListComponent {
   onRemoveClick(data: any): void {
     let result = confirm("<i>¿Está seguro de que desea eliminar el Producto seleccionado?</i>", "Advertencia");
     result.then((dialogResult) => {
-        if (dialogResult) {
-          this.productsService.deleteProduct(data.id).subscribe({
-            next: this.loadDatos.bind(this),
-            error: ({error}) => { this.showAlertError(error) }           
-          });
-        }
+        if (dialogResult) { this.deleteProduct(data.id); }
     });
   }
 
-  private showAlertError(error: string): void {
-    notify({
-      message: error,
-      position: {
-        my: 'center top',
-        at: 'center top',
-      },
-    }, 'error', 4000);
+  private deleteProduct(productId: number): void {
+    this.productsService.deleteProduct(productId).subscribe({
+      next: this.onSuccess.bind(this),
+      error: ({ error }) => { this.onError(error) }           
+    });
   }
 
+  private onSuccess() {
+    this.alertService.showSuccessMessage('El Producto se elimino con éxito')
+    this.loadDatos();
+  }
+
+  private onError(error: any) {
+    this.alertService.showErrorMessage(error.message);
+  }
 }

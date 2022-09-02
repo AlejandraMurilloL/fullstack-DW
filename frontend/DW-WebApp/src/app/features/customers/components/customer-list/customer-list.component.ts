@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { confirm } from 'devextreme/ui/dialog';
-import notify from 'devextreme/ui/notify';
+import { AlertService } from '../../../../shared/services/alert.service';
 import { CustomerList } from '../../models/customer-list';
 import { CustomersService } from '../../services/customers.service';
 
@@ -15,6 +15,7 @@ export class CustomerListComponent implements OnInit {
   customers: CustomerList[] = [];
 
   constructor(private customersService: CustomersService,
+              private alertService: AlertService,
               private router: Router) 
   { 
   }
@@ -53,23 +54,24 @@ export class CustomerListComponent implements OnInit {
   onRemoveClick(data: any): void {
     let result = confirm("<i>¿Está seguro de que desea eliminar el Cliente seleccionado?</i>", "Advertencia");
     result.then((dialogResult) => {
-        if (dialogResult) {
-          this.customersService.deleteCustomer(data.id).subscribe({
-            next: this.loadDatos.bind(this),
-            error: ({error}) => { this.showAlertError(error) }           
-          });
-        }
+        if (dialogResult) { this.deleteCustomer(data.id); }
     });
   }
 
-  private showAlertError(error: string): void {
-    notify({
-      message: error,
-      position: {
-        my: 'center top',
-        at: 'center top',
-      },
-    }, 'error', 4000);
+  private deleteCustomer(customerId: number): void {
+    this.customersService.deleteCustomer(customerId).subscribe({
+      next: this.onSuccess.bind(this),
+      error: ({ error }) => { this.onError(error) }           
+    });
+  }
+
+  private onSuccess() {
+    this.alertService.showSuccessMessage('El Cliente se elimino con éxito')
+    this.loadDatos();
+  }
+
+  private onError(error: any) {
+    this.alertService.showErrorMessage(error.message);
   }
 
 }
