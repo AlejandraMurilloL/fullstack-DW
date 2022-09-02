@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { confirm } from 'devextreme/ui/dialog';
-import notify from 'devextreme/ui/notify';
+import { AlertService } from '../../../../shared/services/alert.service';
 import { CategoryList } from '../../models/category-list';
 import { CategoriesService } from '../../services/categories.service';
 
@@ -15,6 +15,7 @@ export class CategoryListComponent implements OnInit {
   categories: CategoryList[] = [];
 
   constructor(private categoriesService: CategoriesService,
+              private alertService: AlertService,
               private router: Router) 
   { 
   }
@@ -53,24 +54,24 @@ export class CategoryListComponent implements OnInit {
   onRemoveClick(data: any): void {
     let result = confirm("<i>¿Está seguro de que desea eliminar la categoria seleccionada?</i>", "Advertencia");
     result.then((dialogResult) => {
-        if (dialogResult) {
-          this.categoriesService.deleteCategory(data.id).subscribe({
-              next: this.loadDatos.bind(this),
-              error: ({error}) => { this.showAlertError(error) }           
-            }
-          );
-        }
+        if (dialogResult) { this.deleteCategory(data.id); }
     });
   }
 
-  private showAlertError(error: string): void {
-    notify({
-      message: error,
-      position: {
-        my: 'center top',
-        at: 'center top',
-      },
-    }, 'error', 4000);
+  private deleteCategory(categoryId: number) {
+    this.categoriesService.deleteCategory(categoryId).subscribe({
+        next: this.onSuccess.bind(this),
+        error: ({ error }) => { this.onError(error) }}
+    );
+  }
+  
+  private onSuccess() {
+    this.alertService.showSuccessMessage('La Categoria se elimino con éxito')
+    this.loadDatos();
+  }
+
+  private onError(error: any) {
+    this.alertService.showErrorMessage(error.message);
   }
 
 }

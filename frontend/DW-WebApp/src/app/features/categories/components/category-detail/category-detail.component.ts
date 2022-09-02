@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
+import { AlertService } from '../../../../shared/services/alert.service';
 import { CategoryDetail } from '../../models/category-detail';
 import { CategoriesService } from '../../services/categories.service';
 
@@ -15,7 +16,8 @@ export class CategoryDetailComponent implements OnInit {
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
-              private categoriesService: CategoriesService) 
+              private categoriesService: CategoriesService,
+              private alertService: AlertService) 
   {
     this.category = new CategoryDetail();
   }
@@ -33,12 +35,22 @@ export class CategoryDetailComponent implements OnInit {
   }
 
   onSaveClick(): void {
-    this.categoriesService.saveCategory(this.category).subscribe(() => {
-      this.router.navigate(['/categorias/listado']);
+    this.categoriesService.saveCategory(this.category).subscribe({
+      next: this.onSuccess.bind(this),
+      error: ({ message }) => { this.onError(message) }
     });
   }
 
-  onBackClick(): void {
+  goToList(): void {
     this.router.navigate(['/categorias/listado']);
+  }
+
+  private onSuccess(): void {
+    this.alertService.showSuccessMessage('La categoria se guardo con éxito');
+    this.goToList();
+  }
+
+  private onError(error: string) {
+    this.alertService.showErrorMessage(error);
   }
 }
