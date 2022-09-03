@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Invoice } from '../components/models/invoice';
+import { InvoiceCustomer } from '../components/models/invoice-customer';
+import { InvoiceDetailProduct } from '../components/models/invoice-detail-product';
 import { InvoiceList } from '../components/models/invoice-list';
 
 @Injectable({
@@ -20,5 +22,13 @@ export class InvoicesService {
 
   saveInvoice(invoice: Invoice): Observable<Invoice> {
     return this.http.post<Invoice>(`${this.baseUrl}/invoices`, invoice);
+  }
+
+  getCustomers(): Observable<InvoiceCustomer[]> {
+    return this.http.get<InvoiceCustomer[]>(`${this.baseUrl}/customers`);
+  }
+
+  getProducts(): Observable<InvoiceDetailProduct[]> {
+    return this.http.get<InvoiceDetailProduct[]>(`${this.baseUrl}/products`);
   }
 }

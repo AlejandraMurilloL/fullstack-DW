@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { InvoiceDetailList } from '../models/invoice-detail-list';
 
 @Component({
@@ -6,14 +6,8 @@ import { InvoiceDetailList } from '../models/invoice-detail-list';
   templateUrl: './invoice-details-list.component.html',
   styleUrls: ['./invoice-details-list.component.css']
 })
-export class InvoiceDetailsListComponent implements OnInit {
+export class InvoiceDetailsListComponent {
 
   @Input() invoiceDetails: InvoiceDetailList[] = [];
-  
-  constructor() { }
-
-  ngOnInit(): void {
-    console.log(this.invoiceDetails);
-  }
 
 }

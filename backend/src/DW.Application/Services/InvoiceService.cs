@@ -47,7 +47,7 @@ namespace DW.Application.Services
                 .WithInvoiceNumber(await GetLastInvoice())
                 .WithCurrentDate();
 
-            UpdateStock(invoice.InvoiceDetails);
+            await UpdateStock(invoice.InvoiceDetails);
 
             await _unitOfWork.InvoiceRepository.AddAsync(invoice);
             await _unitOfWork.SaveAsync();
@@ -96,11 +96,12 @@ namespace DW.Application.Services
             return lastInvoice;
         }
 
-        private void UpdateStock(ICollection<InvoiceDetail> invoiceDetails)
+        private async Task UpdateStock(ICollection<InvoiceDetail> invoiceDetails)
         {
             foreach (var detail in invoiceDetails)
             {
-                detail.Product.SubtractStock(detail.Quantity);
+                var product = await _unitOfWork.ProductRepository.GetByIdAsync(detail.ProductId);
+                product.SubtractStock(detail.Quantity);
             }
         }
     }

@@ -9,8 +9,12 @@ namespace DW.Infrastructure.Mapper
         public MappingProfile()
         {
             CreateMap<CategoryDto, Category>().ReverseMap();
-            CreateMap<CustomerDto, Customer>().ReverseMap();
-            CreateMap<ProductDto, Product>().ReverseMap();
+            CreateMap<CustomerDto, Customer>();
+            CreateMap<Customer, CustomerDto>()
+                .ForMember(x => x.DisplayExpression, x => x.MapFrom(src => src.FirstName + " " + src.LastName));
+            CreateMap<ProductDto, Product>();
+            CreateMap<Product, ProductDto>()
+                .ForMember(x => x.DisplayExpression, x => x.MapFrom(src => src.Name + " - " + src.Price));
             CreateMap<Invoice, InvoiceDto>()
                 .ForMember(x => x.Num, x => x.MapFrom(src => src.Num.ToString().PadLeft(6, '0')));
             CreateMap<InvoiceDto, Invoice>();

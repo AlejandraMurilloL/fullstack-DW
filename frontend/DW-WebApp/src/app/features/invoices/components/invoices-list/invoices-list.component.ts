@@ -24,7 +24,6 @@ export class InvoicesListComponent {
   loadDatos() {
     this.invoicesService.getInvoices().subscribe((datos) => {
       this.invoices = datos;
-      console.log(this.invoices);
     });
   }
 

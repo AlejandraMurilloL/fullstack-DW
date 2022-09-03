@@ -1,1 +1,116 @@
-<p>invoices-detail works!</p>
+<h2>Registrar nueva Venta</h2>
+<div class="dx-fieldset">
+    <div class="dx-field">
+        <div class="dx-field-label">Cliente:</div>
+        <div class="dx-field-value">
+          <dx-select-box
+            *ngIf="invoice"
+            [dataSource]="customers"
+            displayExpr="displayExpression"
+            valueExpr="id"
+            [(value)]="invoice.customerId"
+            placeholder="Selecciona el Cliente"
+            (onValueChanged)="onCustomerChanged($event)"
+          ></dx-select-box>
+        </div>
+    </div>
+    <div class="dx-field" *ngIf="customerSelected.identificationDocument">
+        <div class="dx-field-label">Identificación:</div>
+        <div class="dx-field-value">
+            <dx-text-box  
+                [(value)]="customerSelected.identificationDocument"
+                [disabled]="true"
+            ></dx-text-box>
+        </div>
+    </div>
+    <div class="dx-field" *ngIf="customerSelected.phone">
+        <div class="dx-field-label">Telefono:</div>
+        <div class="dx-field-value">
+            <dx-text-box  
+                [(value)]="customerSelected.phone"
+                [disabled]="true"
+            ></dx-text-box>
+        </div>
+    </div>
+</div>
+
+<h6>Agregar producto</h6>
+<div class="dx-fieldset">
+  <div class="dx-field">
+      <div class="dx-field-label">Producto:</div>
+      <div class="dx-field-value">
+        <dx-select-box
+          *ngIf="invoiceDetailCurrent"
+          [dataSource]="products"
+          displayExpr="displayExpression"
+          valueExpr="id"
+          [(value)]="invoiceDetailCurrent.productId"
+          placeholder="Selecciona el producto"
+          (onValueChanged)="onProductChanged($event)"
+        ></dx-select-box>
+      </div>
+  </div>
+  <div class="dx-field">
+      <div class="dx-field-label">Cantidad:</div>
+      <div class="dx-field-value">
+          <dx-number-box  
+              [(value)]="invoiceDetailCurrent.quantity"
+          ></dx-number-box>
+      </div>
+  </div>
+</div>
+<div class="dx-fieldset">
+    <dx-validation-summary id="summary"></dx-validation-summary>
+
+    <dx-button
+      class="btn"
+      id="addButton"
+      text="Agregar item"
+      icon="add"
+      type="default"
+      (onClick)="onAddProductClick()"
+    >
+    </dx-button>
+</div>
+<dx-data-grid
+  [dataSource]="invoice.invoiceDetails"
+  [showBorders]="true"
+  [columnAutoWidth]="true"
+>
+  <dxi-column dataField="productName" dataType="string" caption="Producto"></dxi-column>
+  <dxi-column dataField="productPrice" dataType="number" format="currency" caption="Precio Unitario"></dxi-column>
+  <dxi-column dataField="quantity" dataType="number" caption="Cantidad"></dxi-column>
+  <dxi-column dataField="subTotal" dataType="number" format="currency"></dxi-column>
+</dx-data-grid>
+
+<p>
+  <strong>Total: </strong> {{ total | currency }}
+</p>
+
+<div class="dx-fieldset">
+  <dx-validation-summary id="summary"></dx-validation-summary>
+
+  <dx-button
+    class="btn"
+    id="saveButton"
+    text="Guardar"
+    icon="save"
+    type="success"
+    (onClick)="onSaveClick()"
+  >
+  </dx-button>
+  <dx-button
+    class="btn"
+    stylingMode="outlined"
+    id="backButton"
+    text="Cancelar"
+    icon="back"
+    type="success"
+    (onClick)="goToList()"
+  >
+  </dx-button>
+</div>
+
+<pre>
+  {{ invoice | json }}
+</pre>
