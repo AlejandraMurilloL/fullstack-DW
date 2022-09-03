@@ -17,12 +17,20 @@ namespace DW.Infrastructure.Repositories
 
         public override async Task<Invoice> GetByIdAsync(int id)
         {
-            return await _invoices.Include(x => x.InvoiceDetails).Include(x => x.Customer).FirstOrDefaultAsync(e => e.Id == id);
+            return await _invoices
+                .Include(x => x.Customer)
+                .Include(x => x.InvoiceDetails)
+                .ThenInclude(x => x.Product)
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public override async Task<IEnumerable<Invoice>> GetAllAsync()
         {
-            return await _invoices.Include(x => x.InvoiceDetails).Include(x => x.Customer).ToListAsync();
+            return await _invoices
+                .Include(x => x.Customer)
+                .Include(x => x.InvoiceDetails)
+                .ThenInclude(x => x.Product)
+                .ToListAsync();
         }
     }
 }

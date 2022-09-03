@@ -1,0 +1,10 @@
+<dx-data-grid
+  [dataSource]="invoiceDetails"
+  [showBorders]="true"
+  [columnAutoWidth]="true"
+>
+  <dxi-column dataField="product.name" dataType="string" caption="Producto"></dxi-column>
+  <dxi-column dataField="product.price" dataType="number" format="currency" caption="Precio Unitario"></dxi-column>
+  <dxi-column dataField="quantity" dataType="number" caption="Cantidad"></dxi-column>
+  <dxi-column dataField="subTotal" dataType="number" format="currency"></dxi-column>
+</dx-data-grid>

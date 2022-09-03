@@ -1,1 +1,30 @@
-<p>invoices-list works!</p>
+<h2>Ventas</h2>
+<dx-data-grid
+  id="gridContainer"
+  [dataSource]="invoices"
+  [showBorders]="true"
+  (onToolbarPreparing)="onToolbarPreparing($event)"
+>
+  <dxo-search-panel [visible]="true"></dxo-search-panel>
+  <dxo-header-filter [visible]="true"></dxo-header-filter>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxi-column dataField="num"></dxi-column>
+  <dxi-column dataField="date" dataType="date" caption="Fecha"></dxi-column>
+  <dxi-column dataField="customer.firstName" caption="Nombres"></dxi-column>
+  <dxi-column dataField="customer.lastName" caption="Apellidos"></dxi-column>
+  <dxi-column dataField="customer.identificationDocument" caption="Identificación"></dxi-column>
+
+  <dxi-column 
+    dataField="total" 
+    dataType="number" 
+    format="currency" 
+  ></dxi-column>
+
+  <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
+  <div *dxTemplate="let invoice of 'detail'">
+    <div class="master-detail-caption">
+      Detalles</div>
+    <app-invoice-details-list [invoiceDetails]="invoice.data.invoiceDetails"></app-invoice-details-list>
+  </div>
+</dx-data-grid>

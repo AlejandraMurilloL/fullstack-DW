@@ -13,7 +13,7 @@
   <dxi-column dataField="name" caption="Nombre" width="30%"></dxi-column>
   <dxi-column dataField="category.id" caption="categoryId" [visible]="false"></dxi-column>
   <dxi-column dataField="category.name" caption="Categoria" width="30%"></dxi-column>
-  <dxi-column dataField="price" caption="Precio" width="15%"></dxi-column>
+  <dxi-column dataField="price" caption="Precio" width="15%" dataType="number" format="currency"></dxi-column>
   <dxi-column dataField="stock" caption="Stock" width="15%"></dxi-column>
   <dxi-column
     [allowFiltering]="false"
